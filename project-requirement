@@ -1,0 +1,23 @@
+Actors:
+- Team Leader (can be individual)
+- Team Members
+
+Features:
+
+Login/Signup
+- Register (Name, email, address, phonenumber, Organization)
+- Login
+- Oauth2
+- OTP
+- Reset password
+
+HomePage:
+- The dashboard display all the projects and current progress of the projects
+- Can view the teams/ workplaces and every member in that workplaces
+-
+
+Project:
+- Every account are able to create new project
+- By default when a person create new project they will be the owner of that project
+- The owner can invite other member to that project
+- The owner/manager/leader can distribute other role
