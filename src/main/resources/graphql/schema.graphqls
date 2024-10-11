@@ -1,0 +1,34 @@
+type Account {
+    id: ID!
+    fullName: String
+    lastName: String
+    firstName: String
+    dob: String
+    phoneNumber: String
+    companies: String
+    projects: [Project]
+}
+
+type Project {
+    id: ID!
+    name: String
+    description: String
+}
+
+type Query {
+    account(id: ID!): Account
+    accounts: [Account]
+}
+
+type Mutation {
+    createAccount(
+        fullName: String!,
+        lastName: String!,
+        firstName: String!,
+        dob: String!,
+        phoneNumber: String!,
+        companies: String!,
+        password: String!
+    ): Account
+}
+

@@ -1,21 +1,31 @@
 package project.tool.management.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.stereotype.Controller;
 import project.tool.management.dto.AccountResponse;
 import project.tool.management.models.Accounts;
 import project.tool.management.services.AccountService;
 
-@RestController
-@RequestMapping("/")
-@CrossOrigin(origins = "http://localhost:3000") // Allow requests from this origin
+@Controller
 public class AccountController {
+
     @Autowired
     private AccountService _accountService;
 
-    @PostMapping("register")
-    public ResponseEntity<AccountResponse> register(@RequestBody Accounts accounts) {
-        return ResponseEntity.ok(_accountService.register(accounts));
+    @MutationMapping
+    public AccountResponse createAccount(
+            @Argument("fullName") String _fullName,
+            @Argument("lastName") String _lastName,
+            @Argument("firstName") String _firstName,
+            @Argument("dob") String _dob,
+            @Argument("phoneNumber") String _phoneNumber,
+            @Argument("companies") String _companies,
+            @Argument("password") String _password) {
+
+        // Create an account object without manually setting the ID
+        Accounts account = new Accounts(null, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password);
+        return _accountService.register(account);
     }
 }
