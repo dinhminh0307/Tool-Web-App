@@ -4,10 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "developers", schema = "project_tool")
 public class Developers {
-    @Id
     private String _id;
     private String _accountID;
 

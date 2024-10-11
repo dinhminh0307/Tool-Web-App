@@ -1,57 +1,31 @@
-package project.tool.management.models;
+package project.tool.management.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import project.tool.management.models.Projects;
+
 import java.util.List;
 
-/**
- * To match the JSON properties exactly as they are sent, you can use
- * the @JsonProperty annotation from the com.fasterxml.jackson.annotation package. This will tell Jackson explicitly
- * how to map each JSON property to the corresponding field in your model class.*/
-
-@Entity(name = "accounts")
-@Table(schema = "project_tool")
-public class Accounts {
-    @Id
-    @JsonProperty("_id")
+public class AccountResponse {
     private String _id;
-
-    @JsonProperty("_fullName")
     private String _fullName;
-
-    @JsonProperty("_lastName")
     private String _lastName;
-
-    @JsonProperty("_firstName")
     private String _firstName;
-
-    @JsonProperty("_dob")
     private String _dob;
-
-    @JsonProperty("_phoneNumber")
     private String _phoneNumber;
-
-    @JsonProperty("_companies")
     private String _companies;
 
-    @JsonProperty("_password")
-    private String _password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "projects",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
     private List<Projects> _projects;
 
     // Default Constructor
-    public Accounts() {
+    public AccountResponse() {
     }
 
     // Parameterized Constructor
-    public Accounts(String _id, String _fullName, String _lastName, String _firstName,
-                    String _dob, String _phoneNumber, String _companies, List<Projects> _projects, String _password) {
+    public AccountResponse(String _id, String _fullName, String _lastName, String _firstName,
+                    String _dob, String _phoneNumber, String _companies, List<Projects> _projects) {
         this._id = _id;
         this._fullName = _fullName;
         this._lastName = _lastName;
@@ -60,7 +34,6 @@ public class Accounts {
         this._phoneNumber = _phoneNumber;
         this._companies = _companies;
         this._projects = _projects;
-        this._password = _password;
     }
 
     // Getters and Setters
@@ -73,14 +46,7 @@ public class Accounts {
         this._id = _id;
     }
 
-    public String getPassword() {
-        return this._password;
-    }
-
-    public void setPassword(String _password) {
-        this._password = _password;
-    }
-
+    // Getter and Setter for _fullName
     public String getFullName() {
         return _fullName;
     }
@@ -89,6 +55,7 @@ public class Accounts {
         this._fullName = _fullName;
     }
 
+    // Getter and Setter for _lastName
     public String getLastName() {
         return _lastName;
     }
@@ -97,6 +64,7 @@ public class Accounts {
         this._lastName = _lastName;
     }
 
+    // Getter and Setter for _firstName
     public String getFirstName() {
         return _firstName;
     }
@@ -105,6 +73,7 @@ public class Accounts {
         this._firstName = _firstName;
     }
 
+    // Getter and Setter for _dob
     public String getDob() {
         return _dob;
     }
@@ -113,6 +82,7 @@ public class Accounts {
         this._dob = _dob;
     }
 
+    // Getter and Setter for _phoneNumber
     public String getPhoneNumber() {
         return _phoneNumber;
     }
@@ -121,6 +91,7 @@ public class Accounts {
         this._phoneNumber = _phoneNumber;
     }
 
+    // Getter and Setter for _companies
     public String getCompanies() {
         return _companies;
     }
@@ -129,6 +100,7 @@ public class Accounts {
         this._companies = _companies;
     }
 
+    // Getter and Setter for _projects
     public List<Projects> getProjects() {
         return _projects;
     }

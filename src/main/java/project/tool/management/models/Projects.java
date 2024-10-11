@@ -1,9 +1,12 @@
 package project.tool.management.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import project.tool.management.utils.JsonUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "projects")
 @Table(schema = "project_tool")
@@ -13,11 +16,14 @@ public class Projects {
     private String _name;
     private String _description;
 
-    @Column(columnDefinition = "jsonb")
-    private String _owner; // JSON column to store developer list
+    @ManyToMany(mappedBy = "_projects")
+    private List<Accounts> _account;
 
     @Column(columnDefinition = "jsonb")
-    private String _member; // JSON column to store developer list
+    private String _owner; // JSON column to store owner details
+
+    @Column(columnDefinition = "jsonb")
+    private String _member; // JSON column to store members details
 
     @Column(columnDefinition = "jsonb")
     private String _tasks; // JSON column to store project tasks
@@ -30,7 +36,8 @@ public class Projects {
     }
 
     // Parameterized Constructor
-    public Projects(String _id, String _name, String _description, String _owner,String _member, String _tasks, String _blueprints) {
+    public Projects(String _id, String _name, String _description, String _owner,
+                    String _member, String _tasks, String _blueprints, List<Accounts> _account) {
         this._id = _id;
         this._name = _name;
         this._description = _description;
@@ -38,6 +45,7 @@ public class Projects {
         this._member = _member;
         this._tasks = _tasks;
         this._blueprints = _blueprints;
+        this._account = _account;
     }
 
     // Getters and Setters
@@ -81,19 +89,29 @@ public class Projects {
         this._member = _member;
     }
 
-    public String getTasks() {
-        return _tasks;
+    public List<Accounts> getAccounts() {
+        return  this._account;
     }
 
-    public void setTasks(String _tasks) {
-        this._tasks = _tasks;
+    public void setAccounts(List<Accounts> _account) {
+        this._account = _account;
     }
 
-    public String getBlueprints() {
-        return _blueprints;
+    // Methods for tasks
+    public List<Task> getTasks() {
+        return JsonUtil.jsonToList(_tasks, new TypeReference<List<Task>>() {});
     }
 
-    public void setBlueprints(String _blueprints) {
-        this._blueprints = _blueprints;
+    public void setTasks(List<Task> tasks) {
+        this._tasks = JsonUtil.listToJson(tasks);
+    }
+
+    // Methods for blueprints
+    public List<Blueprint> getBlueprints() {
+        return JsonUtil.jsonToList(_blueprints, new TypeReference<List<Blueprint>>() {});
+    }
+
+    public void setBlueprints(List<Blueprint> blueprints) {
+        this._blueprints = JsonUtil.listToJson(blueprints);
     }
 }
