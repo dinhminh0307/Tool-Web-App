@@ -12,7 +12,7 @@ Login/Signup
 - Reset password
 
 HomePage:
-- The dashboard display all the projects and current progress of the projects
+- The dashboard display all the projects and current progress of the projects (date, tasks)
 - Can view the teams/ workplaces and every member in that workplaces
 -
 
@@ -21,3 +21,15 @@ Project:
 - By default when a person create new project they will be the owner of that project
 - The owner can invite other member to that project
 - The owner/manager/leader can distribute other role
+- The owner can choose to dismiss the project
+- Every member can choose to leave to project
+
+Task allocation:
+- Every member are able to create task to each other and put to dashboard
+- The task will have the following information: start date, due date, assignee
+- Member tasks can only be modified by leader or that member
+- 3 Categories to filter task: In Progress, To DO, Done
+
+Drawing Tool
+- Members can draw in their project like draw.io
+- Each drawing will be saved in the drawing section
