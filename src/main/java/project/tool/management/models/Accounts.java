@@ -16,6 +16,9 @@ public class Accounts {
     @JsonProperty("_id")
     private String _id;
 
+    @JsonProperty("_email")
+    private String _email;
+
     @JsonProperty("_fullName")
     private String _fullName;
 
@@ -50,9 +53,10 @@ public class Accounts {
     }
 
     // Parameterized Constructor
-    public Accounts(String _id, String _fullName, String _lastName, String _firstName,
+    public Accounts(String _id, String _email, String _fullName, String _lastName, String _firstName,
                     String _dob, String _phoneNumber, String _companies, List<Projects> _projects, String _password) {
         this._id = _id;
+        this._email = _email;
         this._fullName = _fullName;
         this._lastName = _lastName;
         this._firstName = _firstName;
@@ -71,6 +75,14 @@ public class Accounts {
 
     public void setId(String _id) {
         this._id = _id;
+    }
+
+    public String getEmail() {
+        return this._email;
+    }
+
+    public void setEmail(String _email) {
+        this._email = _email;
     }
 
     public String getPassword() {

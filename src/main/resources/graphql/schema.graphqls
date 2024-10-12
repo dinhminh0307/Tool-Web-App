@@ -1,5 +1,9 @@
+#When you make a GraphQL query, you specify which fields you want to be returned from the existing schema.
+#The server will then respond with exactly what you request.
+
 type Account {
     id: ID!
+    email: String
     fullName: String
     lastName: String
     firstName: String
@@ -22,6 +26,7 @@ type Query {
 
 type Mutation {  #use mutation when to send data to change on database
     createAccount(
+        email: String!,
         fullName: String!,
         lastName: String!,
         firstName: String!,

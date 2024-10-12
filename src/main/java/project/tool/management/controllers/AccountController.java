@@ -20,6 +20,7 @@ public class AccountController {
 
     @MutationMapping
     public AccountResponse createAccount(
+            @Argument("email") String _email,
             @Argument("fullName") String _fullName,
             @Argument("lastName") String _lastName,
             @Argument("firstName") String _firstName,
@@ -29,7 +30,7 @@ public class AccountController {
             @Argument("password") String _password) {
 
         // Create an account object without manually setting the ID
-        Accounts account = new Accounts(null, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password);
+        Accounts account = new Accounts(null, _email, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password);
         return _accountService.register(account);
     }
 
