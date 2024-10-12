@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import project.tool.management.exceptions.InvalidCredentialsException;
 import project.tool.management.models.Accounts;
 import project.tool.management.repo.DBAccountRepo;
 import project.tool.management.utils.JwtUtil;
@@ -26,36 +27,41 @@ public class AuthenticateService {
     DBAccountRepo _accountRepo;
 
     public boolean authenticateAccount(Accounts user, HttpServletResponse response) {
-        Accounts accounts = new Accounts();
-        accounts.setAccounts(user);
+        try {
+            // Perform authentication using the provided email and password
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+            );
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-        );
+            // If authentication is successful, generate JWT token and set it in a cookie
+            if (authentication.isAuthenticated()) {
+                String token = jwtUtil.generateToken(user.getEmail());
+                System.out.println("Token: " + token);
 
-        if (authentication.isAuthenticated()) {
-            String token = jwtUtil.generateToken(user.getEmail());
-            System.out.println("Token: " + token);
-//            UserDTO userDTO = new DTOConverter().convertUserDataToObject(userService.login(farmer, token));
+                // Set JWT token in a secure HTTP-only cookie
+                ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
+                        .httpOnly(true)
+                        .secure(false) // Set to true in production (HTTPS)
+                        .path("/")
+                        .maxAge(7 * 24 * 60 * 60)  // Token valid for 7 days
+                        .sameSite("Lax")  // Prevent CSRF
+                        .build();
 
-            // Set token in a cookie
-            ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
-                    .httpOnly(true)
-                    .secure(false) // Set to true in production (HTTPS)
-                    .path("/")
-                    .maxAge(7 * 24 * 60 * 60)  // Token valid for 7 days
-                    .sameSite("Lax")  // Prevent CSRF
-                    .build();
+                response.addHeader("Set-Cookie", jwtCookie.toString());
 
-            response.addHeader("Set-Cookie", jwtCookie.toString());
+                return true;
+            } else {
+                return false;
+            }
 
-            return true;
-        } else {
-            return false;
+        } catch (Exception ex) {
+            // Catch authentication failures and throw InvalidCredentialsException
+            throw new InvalidCredentialsException("Invalid email or password");
         }
     }
 
-        public Accounts getAccountByToken() {
+
+    public Accounts getAccountByToken() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (authentication != null && authentication.isAuthenticated()) {

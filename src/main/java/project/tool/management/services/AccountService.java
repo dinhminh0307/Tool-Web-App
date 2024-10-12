@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.tool.management.dto.AccountResponse;
+import project.tool.management.exceptions.InvalidCredentialsException;
+import project.tool.management.exceptions.ResourceNotFoundException;
 import project.tool.management.models.Accounts;
 import project.tool.management.repo.DBAccountRepo;
 import project.tool.management.utils.DTOConvert;
@@ -30,11 +32,10 @@ public class AccountService {
 
     public AccountResponse login(Accounts user, HttpServletResponse response) {
         boolean isAuth = authenticateService.authenticateAccount(user, response);
-        if(!isAuth) {
-            return null;
-        }
 
-        Accounts accounts = _accountRepo.findBy_email(user.getEmail()).get();
+        Accounts accounts = _accountRepo.findBy_email(user.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + user.getEmail()));
+        ;
 
         return dtoConvert.toAccountResponse(accounts);
     }
