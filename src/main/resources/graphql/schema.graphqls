@@ -20,7 +20,7 @@ type Query {
     accounts: [Account]
 }
 
-type Mutation {
+type Mutation {  #use mutation when to send data to change on database
     createAccount(
         fullName: String!,
         lastName: String!,

@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import project.tool.management.dto.AccountResponse;
 import project.tool.management.models.Accounts;
 import project.tool.management.services.AccountService;
 
-@Controller
+@RestController
+@RequestMapping("/")
 public class AccountController {
 
     @Autowired
@@ -27,5 +31,10 @@ public class AccountController {
         // Create an account object without manually setting the ID
         Accounts account = new Accounts(null, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password);
         return _accountService.register(account);
+    }
+    
+    @GetMapping("")
+    public String returnTest() {
+        return "Hello World";
     }
 }
