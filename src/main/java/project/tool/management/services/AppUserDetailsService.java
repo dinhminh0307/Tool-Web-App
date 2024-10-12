@@ -19,7 +19,7 @@ public class AppUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Find the user by email
-        Optional<Accounts> accounts = _accountRepo.findByEmail(email);
+        Optional<Accounts> accounts = _accountRepo.findBy_email(email);
 
         // If account is present, map it to UserDetails
         if (accounts.isPresent()) {

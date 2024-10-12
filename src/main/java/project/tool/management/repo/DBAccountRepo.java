@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface DBAccountRepo extends JpaRepository<Accounts, String> {
-    Optional<Accounts> findByEmail(String email);
+    Optional<Accounts> findBy_email(String _email);  // Adjust to match the exact field name
 }

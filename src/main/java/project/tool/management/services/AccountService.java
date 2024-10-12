@@ -1,5 +1,6 @@
 package project.tool.management.services;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +24,20 @@ public class AccountService {
 
     @Autowired
     private DTOConvert dtoConvert;
+
+    @Autowired
+    AuthenticateService authenticateService;
+
+    public AccountResponse login(Accounts user, HttpServletResponse response) {
+        boolean isAuth = authenticateService.authenticateAccount(user, response);
+        if(!isAuth) {
+            return null;
+        }
+
+        Accounts accounts = _accountRepo.findBy_email(user.getEmail()).get();
+
+        return dtoConvert.toAccountResponse(accounts);
+    }
 
     public AccountResponse register(Accounts accounts) {
         String id = _idGenerator.generateAccountID(_accountRepo.findAll());

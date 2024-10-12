@@ -5,8 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import project.tool.management.models.Accounts;
 
 import java.security.Key;
 import java.util.Date;
@@ -68,4 +72,6 @@ public class JwtUtil {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+
 }

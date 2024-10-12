@@ -148,4 +148,16 @@ public class Accounts {
     public void setProjects(List<Projects> _projects) {
         this._projects = _projects;
     }
+
+    public void setAccounts(Accounts accounts) {
+        this._email = accounts.getEmail();
+        this._password = accounts.getPassword();
+        this._dob = accounts.getDob();
+        this._companies = accounts.getCompanies();
+        this._firstName = accounts.getFirstName();
+        this._fullName = accounts.getFullName();
+        this._lastName = accounts.getLastName();
+        this._phoneNumber = accounts.getPhoneNumber();
+        this._projects = accounts.getProjects();
+    }
 }
