@@ -21,3 +21,8 @@ logging:
                 web: DEBUG
                 security.web.authentication: DEBUG
                 security.web.authentication.UsernamePasswordAuthenticationFilter: DEBUG
+server:
+    servlet:
+        session:
+            cookie:
+                secure: false
