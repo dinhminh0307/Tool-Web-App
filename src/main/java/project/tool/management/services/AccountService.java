@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.tool.management.dto.AccountResponse;
+import project.tool.management.exceptions.DuplicateEmailHandler;
 import project.tool.management.exceptions.InvalidCredentialsException;
 import project.tool.management.exceptions.ResourceNotFoundException;
 import project.tool.management.models.Accounts;
@@ -41,6 +42,11 @@ public class AccountService {
     }
 
     public AccountResponse register(Accounts accounts) {
+        boolean existEmail = _accountRepo.findBy_email(accounts.getEmail()).isPresent();
+        if(existEmail) {
+            throw new DuplicateEmailHandler("Email is already registered: " + accounts.getEmail());
+        }
+
         String id = _idGenerator.generateAccountID(_accountRepo.findAll());
         System.out.println("Companay: " + accounts.getCompanies());
         accounts.setId(id);
