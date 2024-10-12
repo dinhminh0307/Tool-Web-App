@@ -32,7 +32,7 @@ public class AccountController {
         Accounts account = new Accounts(null, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password);
         return _accountService.register(account);
     }
-    
+
     @GetMapping("")
     public String returnTest() {
         return "Hello World";
