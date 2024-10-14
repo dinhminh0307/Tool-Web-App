@@ -17,6 +17,7 @@ type Project {
     id: ID!
     name: String
     description: String
+    owner: String
 }
 
 type Query {
@@ -35,5 +36,12 @@ type Mutation {  #use mutation when to send data to change on database
         companies: String!,
         password: String!
     ): Account
+
+    # Mutation to create a new project
+    createProject(
+        name: String!,         # Name of the project (required)
+        description: String!,   # Description of the project (required)
+        owner: String!
+    ): Project
 }
 
