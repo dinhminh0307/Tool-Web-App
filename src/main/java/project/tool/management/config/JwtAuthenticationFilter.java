@@ -52,6 +52,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("No cookies found in request");
         }
 
+        // Retrieve token from Authorization header if not found in cookies
+        if (token == null) {
+            String authorizationHeader = request.getHeader("Authorization");
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                token = authorizationHeader.substring(7); // Extract token from Bearer <token>
+                System.out.println("Token found in Authorization header: " + token);
+            }
+        }
+
+        // parse the token that can be used
+        setBrowserToken(token);
+
         // If the token is valid and no authentication is set in the context
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailService.loadUserByUsername(email);

@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import project.tool.management.exceptions.ResourceNotFoundException;
 import project.tool.management.models.Accounts;
 import project.tool.management.repo.DBAccountRepo;
 

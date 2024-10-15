@@ -41,7 +41,6 @@ type Mutation {  #use mutation when to send data to change on database
     createProject(
         name: String!,         # Name of the project (required)
         description: String!,   # Description of the project (required)
-        owner: String!
     ): Project
 }
 

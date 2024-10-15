@@ -35,14 +35,13 @@ public class AccountService {
         boolean isAuth = authenticateService.authenticateAccount(user, response);
 
         Accounts accounts = _accountRepo.findBy_email(user.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + user.getEmail()));
-        ;
+                .orElseThrow(() -> new ResourceNotFoundException("Wrong email or password"));
 
         return dtoConvert.toAccountResponse(accounts);
     }
 
     public AccountResponse register(Accounts accounts) {
-        boolean existEmail = _accountRepo.findBy_email(accounts.getEmail()).isPresent();
+        boolean existEmail = _accountRepo.findBy_email(accounts.getEmail()) != null;
         if(existEmail) {
             throw new DuplicateEmailHandler("Email is already registered: " + accounts.getEmail());
         }

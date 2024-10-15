@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import project.tool.management.dto.AccountResponse;
@@ -30,7 +33,7 @@ public class AccountController {
             @Argument("password") String _password) {
 
         // Create an account object without manually setting the ID
-        Accounts account = new Accounts(null, _email, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password);
+        Accounts account = new Accounts(null, _email, _fullName, _lastName, _firstName, _dob, _phoneNumber, _companies, null, _password, null);
         return _accountService.register(account);
     }
 
@@ -41,6 +44,13 @@ public class AccountController {
 
     @GetMapping("")
     public String returnTest() {
-        return "Hello World";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            return "No authenticated user";
+        }
+
+        return authentication.getName();
     }
+
 }

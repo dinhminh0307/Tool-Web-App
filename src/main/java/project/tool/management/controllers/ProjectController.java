@@ -17,13 +17,11 @@ public class ProjectController {
     @MutationMapping
     public Projects createProject(
             @Argument String name,
-            @Argument String description,
-            @Argument String owner
+            @Argument String description
     ) {
         Projects projects = new Projects();
         projects.setName(name);
         projects.setDescription(description);
-        projects.setOwner(owner);
 
         return projectService.create(projects);
     }

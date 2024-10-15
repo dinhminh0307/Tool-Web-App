@@ -4,13 +4,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import project.tool.management.config.JwtAuthenticationFilter;
 import project.tool.management.exceptions.InvalidCredentialsException;
+import project.tool.management.exceptions.ResourceNotFoundException;
 import project.tool.management.models.Accounts;
 import project.tool.management.repo.DBAccountRepo;
 import project.tool.management.utils.JwtUtil;
@@ -26,6 +29,9 @@ public class AuthenticateService {
     @Autowired
     DBAccountRepo _accountRepo;
 
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
+
     public boolean authenticateAccount(Accounts user, HttpServletResponse response) {
         try {
             // Perform authentication using the provided email and password
@@ -37,6 +43,10 @@ public class AuthenticateService {
             if (authentication.isAuthenticated()) {
                 String token = jwtUtil.generateToken(user.getEmail());
                 System.out.println("Token: " + token);
+
+                //update the token in the database
+//                user.setToken(token);
+//                _accountRepo.save(user);
 
                 // Set JWT token in a secure HTTP-only cookie
                 ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
@@ -62,19 +72,16 @@ public class AuthenticateService {
 
 
     public Accounts getAccountByToken() {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        String token = jwtAuthenticationFilter.getBrowserToken();
+        email = jwtUtil.extractEmail(token);
+        System.out.println("Email is: " + email);
+        Accounts foundAccount = _accountRepo.findBy_email(email)
+                .orElseThrow(() ->  new ResourceNotFoundException("Can not find email: "));
+        return foundAccount;
 
-            if (authentication != null && authentication.isAuthenticated()) {
-                String email = authentication.getName(); // The email was set as the principal during authentication
-                System.out.println("email: " + email);
+        // If not authenticated or authentication object is null, throw an exception or handle it
+    }
 
-                // Find account by email or throw a custom exception if not found
-                return _accountRepo.findBy_email(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-            }
-
-            // If the authentication is null or not authenticated, throw an exception
-            return null;
-        }
 
 }

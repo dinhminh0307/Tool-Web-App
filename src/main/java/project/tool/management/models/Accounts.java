@@ -40,6 +40,9 @@ public class Accounts {
     @JsonProperty("_password")
     private String _password;
 
+    @JsonProperty("_token")
+    private String _token;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "projects",
@@ -54,7 +57,7 @@ public class Accounts {
 
     // Parameterized Constructor
     public Accounts(String _id, String _email, String _fullName, String _lastName, String _firstName,
-                    String _dob, String _phoneNumber, String _companies, List<Projects> _projects, String _password) {
+                    String _dob, String _phoneNumber, String _companies, List<Projects> _projects, String _password, String _token) {
         this._id = _id;
         this._email = _email;
         this._fullName = _fullName;
@@ -65,6 +68,7 @@ public class Accounts {
         this._companies = _companies;
         this._projects = _projects;
         this._password = _password;
+        this._token = _token;
     }
 
     // Getters and Setters
@@ -75,6 +79,14 @@ public class Accounts {
 
     public void setId(String _id) {
         this._id = _id;
+    }
+
+    public String getToken() {
+        return this._token;
+    }
+
+    public void setToken(String _token)  {
+        this._token = _token;
     }
 
     public String getEmail() {
